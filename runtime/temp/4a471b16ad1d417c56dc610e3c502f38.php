@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./application/admin/view2/wechat_app\index.html";i:1519896797;s:44:"./application/admin/view2/public\layout.html";i:1509957135;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:41:"./application/admin/view2/admin\role.html";i:1509957135;s:44:"./application/admin/view2/public\layout.html";i:1509957135;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -184,8 +184,8 @@
 	<div class="fixed-bar">
 		<div class="item-title">
 			<div class="subject">
-				<h3>小程序管理</h3>
-				<h5>小程序列表</h5>
+				<h3>角色管理</h3>
+				<h5>网站系统角色管理</h5>
 			</div>
 		</div>
 	</div>
@@ -196,13 +196,14 @@
 			<span title="收起提示" id="explanationZoom" style="display: block;"></span>
 		</div>
 		<ul>
-			<li>配置小程序参数</li>
+			<li>网站系统角色, 由平台设置管理.</li>
 		</ul>
 	</div>
 	<div class="flexigrid">
 		<div class="mDiv">
 			<div class="ftitle">
-				<h3>小程序列表</h3>
+				<h3>角色列表</h3>
+				<h5>(共<?php echo count($list); ?>条记录)</h5>
 			</div>
 			<div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
 		</div>
@@ -212,22 +213,19 @@
 					<thead>
 					<tr>
 						<th class="sign" axis="col0">
-							<div style="width: 24px;"><input type="checkbox" onclick="javascript:$('input[name*=tables]').prop('checked',this.checked);"></div>
+							<div style="width: 24px;"><i class="ico-check"></i></div>
 						</th>
 						<th align="left" abbr="article_title" axis="col3" class="">
-							<div style="text-align: left; width: 200px;" class="">小程序名称</div>
+							<div style="text-align: left; width: 100px;" class="">ID</div>
 						</th>
-						<th align="center" abbr="ac_id" axis="col4" class="">
-							<div style="text-align: center; width: 270px;" class="">AppID</div>
+						<th align="left" abbr="ac_id" axis="col4" class="">
+							<div style="text-align: left; width: 100px;" class="">角色名称</div>
 						</th>
 						<th align="center" abbr="article_show" axis="col5" class="">
-							<div style="text-align: center; width: 350px;" class="">AppSecret</div>
-						</th>
-						<th align="center" abbr="article_time" axis="col6" class="">
-							<div style="text-align: center; width: 100px;" class="">是否默认小程序</div>
+							<div style="text-align: left; width: 100px;" class="">描述</div>
 						</th>
 						<th align="center" axis="col1" class="handle">
-							<div style="text-align: center; width: 150px;">设为默认</div>
+							<div style="text-align: center; width: 150px;">操作</div>
 						</th>
 						<th style="width:100%" axis="col7">
 							<div></div>
@@ -237,57 +235,54 @@
 				</table>
 			</div>
 		</div>
-        <div class="tDiv">
-            <div class="tDiv2">
-                <div class="fbutton">
-                    <a onclick="config_add();" id="ing_btn">
-                        <div class="add" title="添加小程序">
-                            <span><i class="fa fa-book"></i><span id="export">添加小程序</span></span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div style="clear:both"></div>
-        </div>
+		<div class="tDiv">
+			<div class="tDiv2">
+				<div class="fbutton">
+					<a href="<?php echo U('Admin/role_info'); ?>">
+						<div class="add" title="添加角色">
+							<span><i class="fa fa-plus"></i>添加角色</span>
+						</div>
+					</a>
+				</div>
+			</div>
+			<div style="clear:both"></div>
+		</div>
 		<div class="bDiv" style="height: auto;">
 			<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
-				<form  method="post" id="export-form" action="<?php echo U('export'); ?>">
-					<table>
-						<tbody>
-						<?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): if( count($list)==0 ) : echo "" ;else: foreach($list as $k=>$vo): ?>
-							<tr data-id="<?php echo $vo['name']; ?>">
-								<td class="sign" style="width: 24px;">
-									<div ><input type="checkbox" name="tables[]" value="<?php echo $vo['Name']; ?>"></div>
+				<table>
+					<tbody>
+					<?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): if( count($list)==0 ) : echo "" ;else: foreach($list as $k=>$vo): if($vo['role_id'] > 1): ?>
+							<tr>
+								<td class="sign">
+									<div style="width: 24px;"><i class="ico-check"></i></div>
 								</td>
 								<td align="left" class="">
-									<div style="text-align: left; width: 200px;"><?php echo $vo['wxapp_name']; ?></div>
+									<div style="text-align: left; width: 100px;"><?php echo $vo['role_id']; ?></div>
 								</td>
-								<td align="center" class="">
-									<div style="text-align: center; width: 270px;"><?php echo $vo['appid']; ?></div>
+								<td align="left" class="">
+									<div style="text-align: left; width: 100px;"><?php echo $vo['role_name']; ?></div>
 								</td>
-								<td align="center" class="">
-									<div style="text-align: center; width: 350px;"><?php echo $vo['app_secret']; ?></div>
-								</td>
-								<td align="center" class="">
-									<div style="text-align: center; width: 100px;">是</div>
+								<td align="left" class="">
+									<div style="text-align: left; width: 100px;"><?php echo $vo['role_desc']; ?></div>
 								</td>
 								<td align="center" class="handle">
-									<div style="text-align: center; width: 150px;">
-										<a href="<?php echo U('Tools/optimize',array('tablename'=>$vo['Name'])); ?>" class="btn blue"><i class="fa fa-magic"></i>设为默认</a>
+									<div style="text-align: center; width: 170px; max-width:170px;">
+										<a href="<?php echo U('Admin/role_info',array('role_id'=>$vo['role_id'])); ?>" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+										<a class="btn red"  href="javascript:void(0)" data-url="<?php echo U('Admin/roleDel'); ?>" data-id="<?php echo $vo['role_id']; ?>" onclick="delfun(this)"><i class="fa fa-trash-o"></i>删除</a>
 									</div>
 								</td>
-								<td align="" class="" style=" width: 100%;">
+								<td align="" class="" style="width: 100%;">
 									<div>&nbsp;</div>
 								</td>
 							</tr>
-						<?php endforeach; endif; else: echo "" ;endif; ?>
-						</tbody>
-					</table>
-				</form>
+						<?php endif; endforeach; endif; else: echo "" ;endif; ?>
+					</tbody>
+				</table>
 			</div>
 			<div class="iDiv" style="display: none;"></div>
 		</div>
-	</div>
+		<!--分页位置-->
+		<?php echo $page; ?> </div>
 </div>
 <script>
 	$(document).ready(function(){
@@ -302,12 +297,32 @@
 		});
 
 	});
-        
-	function config_add ()
-    {
-        layer.msg('添加小程序');
-    }
 
+
+	function delfun(obj) {
+		// 删除按钮
+		layer.confirm('确认删除？', {
+			btn: ['确定', '取消'] //按钮
+		}, function () {
+			$.ajax({
+				type: 'post',
+				url: $(obj).attr('data-url'),
+				data : {role_id:$(obj).attr('data-id')},
+				dataType: 'json',
+				success: function (data) {
+					layer.closeAll();
+					if (data == 1) {
+						$(obj).parent().parent().parent().remove();
+						layer.closeAll();
+					} else {
+						layer.alert('删除失败', {icon: 2});  //alert('删除失败');
+					}
+				}
+			})
+		}, function () {
+			layer.closeAll();
+		});
+	}
 </script>
 </body>
 </html>
